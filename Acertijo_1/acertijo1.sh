@@ -6,14 +6,17 @@
 
 entrada=$1
 salida=$2
-touch $salida
-if [ ! -s $entrada ];then
-    exit 1
-fi
+
 if [ $# -ne 2 ]; then
     echo "Error: Se requieren exactamente dos argumentos."
     exit 1
 fi
+
+touch $salida
+if [ ! -s $entrada ];then
+    exit 1
+fi
+
 # Acciones que tiene que tener Pato para ser encontrado, tan solo realiza una de las acciones.
 accion1="limpió las pezuñas"
 accion2="resbaló en el barro"
@@ -33,5 +36,6 @@ hora=$(grep -o -m 1 '[0-2][0-9]:[0-5][0-9]' $auxiliar2)
 
 # se imprime con el formato pedido en el archivo de salida
 echo "Hora indicada para capturar a Pato : $hora" > $salida
+
 rm $auxiliar
 rm $auxiliar2

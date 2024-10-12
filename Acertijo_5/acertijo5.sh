@@ -9,10 +9,6 @@ entrada=$1
 numero=$2
 salida=$3
 
-if [ ! -s $entrada ];then
-    exit 1
-fi
-
 if [ $# -ne 3 ]; then
     echo "Error: Se requieren exactamente tres argumentos."
     exit 1
@@ -23,6 +19,11 @@ if ! [[ "$2" =~ ^[0-9]+$ ]]; then # verificamos si el segundo argumento sea un n
     exit 1
 elif [ "$2" -lt 0 ]; then # verificamos que el segundo argumento sea un numero natural incluido el 0
     echo "ERROR: El segundo argumento tiene que ser un numero mayor e igual que 0."
+    exit 1
+fi
+
+touch $salida
+if [ ! -s $entrada ];then
     exit 1
 fi
 

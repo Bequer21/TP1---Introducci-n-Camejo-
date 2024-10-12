@@ -3,14 +3,15 @@
 entrada=$1
 infractores="infractores.txt"
 tiempos_historicos="acertijo3.txt"
-touch $infractores
-touch $tiempos_historicos
 
-if [ ! -s $entrada ];then
-    exit 1
-fi
 if [ $# -ne 1 ]; then
     echo "Error: Se requieren exactamente un argumentos."
+    exit 1
+fi
+
+touch $infractores
+touch $tiempos_historicos
+if [ ! -s $entrada ];then
     exit 1
 fi
 

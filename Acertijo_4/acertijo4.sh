@@ -17,13 +17,14 @@
 
 entrada=$1
 salida=$2 
-touch "$salida"
-if [ ! -s $entrada ];then
-    exit 1
-fi
 
 if [ $# -ne 2 ]; then
     echo "Error: Se requieren exactamente dos argumentos."
+    exit 1
+fi
+
+touch "$salida"
+if [ ! -s $entrada ];then
     exit 1
 fi
 
