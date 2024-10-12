@@ -9,6 +9,10 @@ touch $tiempos_historicos
 if [ ! -s $entrada ];then
     exit 1
 fi
+if [ $# -ne 1 ]; then
+    echo "Error: Se requieren exactamente un argumentos."
+    exit 1
+fi
 
 numeros="años.txt"
 

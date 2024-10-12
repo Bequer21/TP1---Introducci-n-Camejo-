@@ -22,6 +22,11 @@ if [ ! -s $entrada ];then
     exit 1
 fi
 
+if [ $# -ne 2 ]; then
+    echo "Error: Se requieren exactamente dos argumentos."
+    exit 1
+fi
+
 codigo="codigo.txt"
 
 # Con sed eliminamos todo lo que no este relacionado con lo buscado 'I' ignora el case de mayuscula y minuscula

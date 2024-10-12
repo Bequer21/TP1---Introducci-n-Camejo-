@@ -10,7 +10,10 @@ touch $salida
 if [ ! -s $entrada ];then
     exit 1
 fi
-
+if [ $# -ne 2 ]; then
+    echo "Error: Se requieren exactamente dos argumentos."
+    exit 1
+fi
 # Acciones que tiene que tener Pato para ser encontrado, tan solo realiza una de las acciones.
 accion1="limpió las pezuñas"
 accion2="resbaló en el barro"

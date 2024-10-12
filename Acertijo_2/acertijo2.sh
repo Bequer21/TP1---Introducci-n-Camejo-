@@ -21,6 +21,10 @@ if [ ! -s $entrada ];then
     exit 1
 fi
 
+if [ $# -ne 2 ]; then
+    echo "Error: Se requieren exactamente dos argumentos."
+    exit 1
+fi
 auxiliar1="auxiliar.txt"
 auxiliar2="auxiliar2.txt"
 
