@@ -9,6 +9,7 @@ entrada=$1
 numero=$2
 salida=$3
 
+# Caso donde no se pudo ingresar tres argumentos
 if [ $# -ne 3 ]; then
     echo "Error: Se requieren exactamente tres argumentos."
     exit 1
@@ -23,22 +24,23 @@ elif [ "$2" -lt 0 ]; then # verificamos que el segundo argumento sea un numero n
 fi
 
 touch $salida
+# Si el archivo de entrada esta vacia no realiza ningun comando tan solo crea un archivo de salida vacia.
 if [ ! -s $entrada ];then
     exit 1
 fi
 
 clave="misterio"
+
 # Buscamos la cantidad de palabras 'misterio' que aparece, 
 # podria estar al inicio o al final, en mayuscula
-# grep -E -i  -o '(misterio | misterio | misterio$)' paginaDiario.txt | wc -w 
-grep -E -i -o "($clave | $clave | $clave$)" $entrada | wc -w >> $salida
+grep -E -i -o '(^misterio | misterio | misterio[^a-z]| misterio$)' $entrada | wc -w >> $salida
 
 factorial() {
     acum=1
     for i in $(seq 1 $1); do
             acum=$(($acum * $i))
     done
-    echo "$acum" >> $salida
+    echo "$acum" >> "$salida"
     return 0
 }
 
@@ -59,9 +61,10 @@ fibonacci() {
     done
 }
 
-if [ $(($numero%2)) -eq 0 ]; then
+if [ $(($numero%2)) -eq 0 ]; then # Si en numero es par realizamos en factorial
     factorial "$numero"
-else
-    fibonacci "$numero"
+else 
+    # caso contrario el fibonacci
+    fibonacci "$numero"  
     echo "$res" >> $salida
-fi 
+fi

@@ -7,12 +7,14 @@
 entrada=$1
 salida=$2
 
+# Caso donde no se pudo ingresar dos argumentos
 if [ $# -ne 2 ]; then
     echo "Error: Se requieren exactamente dos argumentos."
     exit 1
 fi
 
 touch $salida
+# Si el archivo de entrada esta vacia no realiza ningun comando tan solo crea un archivo de salida vacia.
 if [ ! -s $entrada ];then
     exit 1
 fi
@@ -21,21 +23,29 @@ fi
 accion1="limpió las pezuñas"
 accion2="resbaló en el barro"
 
-# Aqui se estara guardando la primero busquea que es importante el horario y sala.
+# Aqui se estara guardando las primeras busquedas que es importante el horario y sala.
 auxiliar="auxiliar.txt"
 auxiliar2="auxiliar2.txt"
 
 # La sala tiene que ser 7,y el numero anterior tiene que ser impar.
 grep  '[13579] [7]' $entrada > $auxiliar
 
+if [ ! -s $auxiliar ];then # Si no se encontro un minuto impar y la misma sala, no hay que realizar nada mas
+    rm $auxiliar
+    exit 1
+fi
+
 # Busca en un archivo auxiliar las dos acciones de pato
 grep -E "($accion1|$accion2)" $auxiliar > $auxiliar2
+
+if [ ! -s $auxiliar2 ];then # Si no se encontro las acciones realizadas por pato, no se tiene que hacer nada mas
+    rm $auxiliar $auxiliar2
+    exit 1
+fi
 
 # solo buscamos la primera aparicion en este caso la primera linea 
 hora=$(grep -o -m 1 '[0-2][0-9]:[0-5][0-9]' $auxiliar2)
 
-# se imprime con el formato pedido en el archivo de salida
 echo "Hora indicada para capturar a Pato : $hora" > $salida
 
-rm $auxiliar
-rm $auxiliar2
+rm $auxiliar $auxiliar2

@@ -17,12 +17,14 @@
 entrada=$1
 salida=$2
 
+# Caso donde no se pudo ingresar dos argumentos
 if [ $# -ne 2 ]; then
     echo "Error: Se requieren exactamente dos argumentos."
     exit 1
 fi
 
 touch $salida
+# Si el archivo de entrada esta vacia no realiza ningun comando tan solo crea un archivo de salida vacia.
 if [ ! -s $entrada ];then
     exit 1
 fi
@@ -34,7 +36,7 @@ auxiliar2="auxiliar2.txt"
 grep -E -v '[aeiou]{3,}|[0-9]' $entrada > $auxiliar1
 
 # Elimina las lineas que no comienzen con la letra mayuscula seguida de una letra minuscula.
-grep '^[A-Z][a-z]' $auxiliar1 > $auxiliar2
+grep -E '^[A-Z][a-z]|^[A-Z] [a-z]' $auxiliar1 > $auxiliar2
 
 # Modificar las vocales minusculas con la letra 'X' de la cancion.
 sed -i 's/[aeiou]/X/g' $auxiliar2
@@ -42,10 +44,10 @@ sed -i 's/[aeiou]/X/g' $auxiliar2
 # Con un ciclo empiezo a leer linea por linea.
 while read -r linea; do
     cant_palabras=$(echo "$linea" | wc -w) #  wc -w para contar la cantidad de palabras
-    if [ "$cant_palabras" -lt 5 ];then  # Verifico que si son menores a 5 los invierto
+    if [ "$cant_palabras" -lt 5 ];then  # Verifico que si son menores a 5,si lo son los invierto
         echo "$linea" | rev >> "$salida"
     else
-        echo "$linea" >> "$salida" # si son mayores e iguales a 5 lo escribo en la salida
+        echo "$linea" >> "$salida" # si son mayores e iguales a 5 lo escribo en el archivo de salida.
     fi
 done < "$auxiliar2"
 

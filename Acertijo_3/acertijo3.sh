@@ -4,6 +4,7 @@ entrada=$1
 infractores="infractores.txt"
 tiempos_historicos="acertijo3.txt"
 
+# Caso donde no se pudo ingresar un argumentos
 if [ $# -ne 1 ]; then
     echo "Error: Se requieren exactamente un argumentos."
     exit 1
@@ -11,6 +12,7 @@ fi
 
 touch $infractores
 touch $tiempos_historicos
+# Si el archivo de entrada esta vacia no realiza ningun comando tan solo crea dos archivos vacios
 if [ ! -s $entrada ];then
     exit 1
 fi
@@ -31,14 +33,19 @@ done < "$numeros"
 
 num=$(("$num"-5)) # Le descuento 5 años para empezar a estar ordenando desde el menor año hasta el mayor
 
-for i in $(seq 0 4); do
+for i in $(seq 0 4); do  
     grep "$num" $entrada > $numeros
-    sort -t, -k 3,3n $numeros | head -n 3 >> $infractores
+    sort -t, -k 3,3n $numeros | head -n 3 >> $infractores # detallado en las ultimas lineas
     num=$(("$num"+1))
 done
 
 rm $numeros
 
 # Buscamos los 3 mejores tiempos historicos
+sort -t, -k 3,3n $entrada | head -n 3 >> $tiempos_historicos # detallado en las ultimas lineas
 
-sort -t, -k 3,3n $entrada | head -n 3 >> $tiempos_historicos
+# -k 3,3n indica que se debe ordenar por la tercera columna de cada linea de menor a mayor.
+# -t, delimitador de campo es una coma, por ser un archivo csv
+# head -n 3 toma solo las primeras 3 lineas de la salida anterior
+# sort --> https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html
+# head --> https://www.gnu.org/software/coreutils/manual/html_node/head-invocation.html#head-invocation

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# cueva = dobla
+# cueva = doblar
 # secreta = izquierda
 # pocos = despues
 # metros = derecha
@@ -18,12 +18,14 @@
 entrada=$1
 salida=$2 
 
+# Caso donde no se pudo ingresar dos argumentos
 if [ $# -ne 2 ]; then
     echo "Error: Se requieren exactamente dos argumentos."
     exit 1
 fi
 
 touch "$salida"
+# Si el archivo de entrada esta vacia no realiza ningun comando tan solo crea un archivo de salida vacia.
 if [ ! -s $entrada ];then
     exit 1
 fi
@@ -33,45 +35,22 @@ codigo="codigo.txt"
 # Con sed eliminamos todo lo que no este relacionado con lo buscado 'I' ignora el case de mayuscula y minuscula
 sed 's/[^a-z]//gI' "$entrada" > "$salida"
 
-# Funcion que nos permite realizar la busqueda en cuando a lo que se pide.
-buscar_codigo() {
-    case $1 in
-        "cueva")
-            palabra="doblar"
-            ;;
-        "secreta")
-            palabra="izquierda"
-            ;;
-        "pocos")
-            palabra="despues"
-            ;;
-        "metros")
-            palabra="derecha"
-            ;;
-        "arriba")
-            palabra="delante"
-            ;;
-        "atras")
-            palabra="reversa"
-            ;;
-        *)
-            return 1
-            ;;
-    esac
-    return 0
-}
-while read -r palabra;do
-    echo "${palabra,,}" >> "$codigo" # Convertimos en minuscula cada palabra
+
+sed -i 's/cueva/doblar/gI' $salida
+sed -i 's/secreta/izquierda/gI' $salida
+sed -i 's/pocos/despues/gI' $salida
+sed -i 's/metros/derecha/gI' $salida
+sed -i 's/arriba/delante/gI' $salida
+sed -i 's/atras/reversa/gI' $salida
+
+while read -r linea;do
+    echo -n "$linea" >> "$codigo"
 done < "$salida"
+
+echo "" >> "$codigo"
 
 >"$salida" # Limpiamos la salida
 
-while read -r linea;do
-    if buscar_codigo "$linea"; then
-       echo -n "$palabra" >> "$salida"
-    fi
-done < "$codigo"
-
-echo "" >> "$salida"
+cp "$codigo" "$salida"
 
 rm "$codigo"
